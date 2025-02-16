@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import '../../../core/di/di.dart';
 import '../../../product/components/carousel_widget.dart';
 import '../controller/product_detail_controller.dart';
-import '../controller/home_state.dart';
+import '../controller/product_state.dart';
 import '../model/product_detail_response_model.dart';
 
 class ProductDetailPage extends ConsumerStatefulWidget {

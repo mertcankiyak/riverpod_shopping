@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:riverpod/riverpod.dart';
-import '../../features/home/controller/product_detail_controller.dart';
-import '../../features/home/controller/home_state.dart';
-import '../../features/home/service/product_service.dart';
+import '../../features/productDetail/controller/product_detail_controller.dart';
+import '../../features/productDetail/controller/product_state.dart';
+import '../../features/productDetail/service/product_service.dart';
 import '../network/network_manager.dart';
 import '../network/repository_manager.dart';
 
@@ -21,12 +21,12 @@ Future<void> setupDi() async {
       RepositoryManager(dio: di<NetworkManager>().dio));
 
   //SERVICES
-  //HomeService
+  //ProductService
   di.registerSingleton<ProductService>(ProductService(di<RepositoryManager>()));
 
   //NOTIFIERS
-  //HomeStateNotifier
+  //ProductDetailNotifier
   di.registerSingleton(
-      StateNotifierProvider<ProductDetailController, HomeState>((ref) =>
+      StateNotifierProvider<ProductDetailController, ProductState>((ref) =>
           ProductDetailController(productService: di<ProductService>())));
 }

@@ -9,10 +9,10 @@ import '../model/create_cart_response_model.dart';
 import '../model/product_detail_response_model.dart';
 import '../model/product_variant_response_model.dart';
 import '../service/product_service.dart';
-import 'home_state.dart';
+import 'product_state.dart';
 
-class ProductDetailController extends StateNotifier<HomeState> {
-  ProductDetailController({required this.productService}) : super(HomeState()) {
+class ProductDetailController extends StateNotifier<ProductState> {
+  ProductDetailController({required this.productService}) : super(ProductState()) {
     fethProductDetail();
   }
 
@@ -22,51 +22,51 @@ class ProductDetailController extends StateNotifier<HomeState> {
 
   Future<void> fethProductDetail() async {
     try {
-      state = state.copyWith(homeStateStatus: HomeStateStatus.loading);
+      state = state.copyWith(homeStateStatus: ProductStateStatus.loading);
       ProductDetailResponseModel? data =
           await productService.fethProductDetail(id: "gid://shopify/Product/8740231577837");
       if (data?.error == null) {
         setupProductInformationTile(data);
         state = state.copyWith(
-            homeStateStatus: HomeStateStatus.completed,
+            homeStateStatus: ProductStateStatus.completed,
             productDetail: data,
             productInformationTiles: productInformationTiles);
       } else {
         state = state.copyWith(
-            homeStateStatus: HomeStateStatus.fail,
+            homeStateStatus: ProductStateStatus.fail,
             error: data?.error?.errorMessage);
       }
     } catch (e) {
       state = state.copyWith(
-          homeStateStatus: HomeStateStatus.fail, error: e.toString());
+          homeStateStatus: ProductStateStatus.fail, error: e.toString());
     }
   }
 
   Future<void> fetchVariantDetail({required String id}) async {
     try {
-      state = state.copyWith(homeStateStatus: HomeStateStatus.loading);
+      state = state.copyWith(homeStateStatus: ProductStateStatus.loading);
       ProductVariantResponseModel? data =
           await productService.fethProductVariant(id: id);
       selectedVariant = data;
       if (data?.error == null) {
         setupProductVariantInformationTile(data);
         state = state.copyWith(
-            homeStateStatus: HomeStateStatus.completed,
+            homeStateStatus: ProductStateStatus.completed,
             productVariantResponseModel: data);
       } else {
         state = state.copyWith(
-            homeStateStatus: HomeStateStatus.fail,
+            homeStateStatus: ProductStateStatus.fail,
             error: data?.error?.errorMessage);
       }
     } catch (e) {
       state = state.copyWith(
-          homeStateStatus: HomeStateStatus.fail, error: e.toString());
+          homeStateStatus: ProductStateStatus.fail, error: e.toString());
     }
   }
 
   Future<void> addToCart() async {
     try {
-      state = state.copyWith(homeStateStatus: HomeStateStatus.addToCartLoading);
+      state = state.copyWith(homeStateStatus: ProductStateStatus.addToCartLoading);
       String? cartId = await SharedPreferencesManager.instance
           .getCart(key: SharedPreferencesEnum.cart);
       if (cartId == null) {
@@ -86,12 +86,12 @@ class ProductDetailController extends StateNotifier<HomeState> {
                           ""));
           if (addToCartResponse?.error == null) {
             state = state.copyWith(
-                homeStateStatus: HomeStateStatus.addToCartCompleted);
+                homeStateStatus: ProductStateStatus.addToCartCompleted);
           } else {
-            state = state.copyWith(homeStateStatus: HomeStateStatus.fail);
+            state = state.copyWith(homeStateStatus: ProductStateStatus.fail);
           }
         } else {
-          state = state.copyWith(homeStateStatus: HomeStateStatus.fail);
+          state = state.copyWith(homeStateStatus: ProductStateStatus.fail);
         }
       } else {
         String? cartId = await SharedPreferencesManager.instance
@@ -106,14 +106,14 @@ class ProductDetailController extends StateNotifier<HomeState> {
                         ""));
         if (addToCartResponse?.error == null) {
           state = state.copyWith(
-              homeStateStatus: HomeStateStatus.addToCartCompleted);
+              homeStateStatus: ProductStateStatus.addToCartCompleted);
         } else {
-          state = state.copyWith(homeStateStatus: HomeStateStatus.fail);
+          state = state.copyWith(homeStateStatus: ProductStateStatus.fail);
         }
       }
     } catch (e) {
       state = state.copyWith(
-          homeStateStatus: HomeStateStatus.fail, error: e.toString());
+          homeStateStatus: ProductStateStatus.fail, error: e.toString());
     }
   }
 

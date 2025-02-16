@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 import '../model/product_detail_response_model.dart';
 import '../model/product_variant_response_model.dart';
 
-enum HomeStateStatus { initial, loading, completed, fail, addToCartLoading, addToCartCompleted }
+enum ProductStateStatus { initial, loading, completed, fail, addToCartLoading, addToCartCompleted }
 
-class HomeState {
-  HomeStateStatus homeStateStatus;
+class ProductState {
+  ProductStateStatus homeStateStatus;
   String? error;
   ProductDetailResponseModel? productDetail;
   List<Widget>? productInformationTiles;
   ProductVariantResponseModel? productVariantResponseModel;
 
-  HomeState(
-      {this.homeStateStatus = HomeStateStatus.initial,
+  ProductState(
+      {this.homeStateStatus = ProductStateStatus.initial,
       this.error,
       this.productDetail,
       this.productInformationTiles = const [], this.productVariantResponseModel});
 
-  HomeState copyWith(
-      {HomeStateStatus? homeStateStatus,
+  ProductState copyWith(
+      {ProductStateStatus? homeStateStatus,
       String? error,
       ProductDetailResponseModel? productDetail,
        ProductVariantResponseModel? productVariantResponseModel,
       List<Widget>? productInformationTiles}) {
-    return HomeState(
+    return ProductState(
         productDetail: productDetail ?? this.productDetail,
         homeStateStatus: homeStateStatus ?? this.homeStateStatus,
         productInformationTiles:

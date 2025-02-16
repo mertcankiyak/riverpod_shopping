@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../features/home/model/product_detail_response_model.dart';
-import '../../features/home/model/product_variant_response_model.dart';
+import '../../features/productDetail/model/product_detail_response_model.dart';
+import '../../features/productDetail/model/product_variant_response_model.dart';
 
 class CarouselWidget extends StatefulWidget {
   CarouselWidget(
