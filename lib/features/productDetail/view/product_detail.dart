@@ -17,19 +17,19 @@ class ProductDetailPage extends ConsumerStatefulWidget {
 
 class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   var stateReference =
-      di<StateNotifierProvider<ProductDetailController, HomeState>>();
+      di<StateNotifierProvider<ProductDetailController, ProductState>>();
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(stateReference);
-    ref.listen<HomeState>(stateReference, (previous, next) {
-      if (next.homeStateStatus == HomeStateStatus.addToCartLoading) {
+    ref.listen<ProductState>(stateReference, (previous, next) {
+      if (next.productStateStatus == ProductStateStatus.addToCartLoading) {
         showDialog(
           barrierDismissible: false,
           context: context,
           builder: (context) => loadingAlertDialog(),
         );
-      } else if (next.homeStateStatus == HomeStateStatus.addToCartCompleted) {
+      } else if (next.productStateStatus == ProductStateStatus.addToCartCompleted) {
         Navigator.pop(context);
         showDialog(
           barrierDismissible: true,
@@ -41,14 +41,14 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Builder(builder: (context) {
-        switch (state.homeStateStatus) {
-          case HomeStateStatus.initial:
+        switch (state.productStateStatus) {
+          case ProductStateStatus.initial:
             return const Center(child: CircularProgressIndicator());
-          case HomeStateStatus.loading:
+          case ProductStateStatus.loading:
             return const Center(child: CircularProgressIndicator());
-          case HomeStateStatus.completed:
+          case ProductStateStatus.completed:
             return _buildBody(state, ref);
-          case HomeStateStatus.fail:
+          case ProductStateStatus.fail:
             return Center(child: Text(state.error ?? ""));
           default:
             return _buildBody(state, ref);
@@ -67,7 +67,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  AlertDialog successAlertDialog(BuildContext context, HomeState state) {
+  AlertDialog successAlertDialog(BuildContext context, ProductState state) {
     return AlertDialog(
       actions: [
         ElevatedButton(
@@ -120,7 +120,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  Widget _buildBody(HomeState state, WidgetRef ref) {
+  Widget _buildBody(ProductState state, WidgetRef ref) {
     return Stack(
       children: [
         CustomScrollView(
@@ -137,7 +137,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  SliverList _buildBodyContent(HomeState state, WidgetRef ref) {
+  SliverList _buildBodyContent(ProductState state, WidgetRef ref) {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -168,7 +168,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  SliverAppBar _buildSliverAppBar(HomeState state) {
+  SliverAppBar _buildSliverAppBar(ProductState state) {
     return SliverAppBar(
         pinned: false,
         leading: IconButton(
@@ -184,13 +184,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
         ));
   }
 
-  Text _buildProductTitle(HomeState state) {
+  Text _buildProductTitle(ProductState state) {
     return Text("${state.productDetail?.data?.product?.vendor}",
         style: context.general.textTheme.titleMedium
             ?.copyWith(fontWeight: FontWeight.bold));
   }
 
-  Row _buildFavorite(HomeState state) {
+  Row _buildFavorite(ProductState state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -203,7 +203,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  SingleChildScrollView _buildVariantList(HomeState state, WidgetRef ref) {
+  SingleChildScrollView _buildVariantList(ProductState state, WidgetRef ref) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Row(
@@ -281,7 +281,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  ListView _buildProductInfo(HomeState state) {
+  ListView _buildProductInfo(ProductState state) {
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
@@ -295,7 +295,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
         });
   }
 
-  Align _buildFooter(HomeState state, WidgetRef ref) {
+  Align _buildFooter(ProductState state, WidgetRef ref) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -314,7 +314,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     );
   }
 
-  Expanded _buildPriceText(HomeState state) {
+  Expanded _buildPriceText(ProductState state) {
     return Expanded(
       child: state.productVariantResponseModel != null
           ? Text(

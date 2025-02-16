@@ -12,7 +12,8 @@ import '../service/product_service.dart';
 import 'product_state.dart';
 
 class ProductDetailController extends StateNotifier<ProductState> {
-  ProductDetailController({required this.productService}) : super(ProductState()) {
+  ProductDetailController({required this.productService})
+      : super(ProductState()) {
     fethProductDetail();
   }
 
@@ -22,51 +23,52 @@ class ProductDetailController extends StateNotifier<ProductState> {
 
   Future<void> fethProductDetail() async {
     try {
-      state = state.copyWith(homeStateStatus: ProductStateStatus.loading);
-      ProductDetailResponseModel? data =
-          await productService.fethProductDetail(id: "gid://shopify/Product/8740231577837");
+      state = state.copyWith(productStateStatus: ProductStateStatus.loading);
+      ProductDetailResponseModel? data = await productService.fethProductDetail(
+          id: "gid://shopify/Product/8740231577837");
       if (data?.error == null) {
         setupProductInformationTile(data);
         state = state.copyWith(
-            homeStateStatus: ProductStateStatus.completed,
+            productStateStatus: ProductStateStatus.completed,
             productDetail: data,
             productInformationTiles: productInformationTiles);
       } else {
         state = state.copyWith(
-            homeStateStatus: ProductStateStatus.fail,
+            productStateStatus: ProductStateStatus.fail,
             error: data?.error?.errorMessage);
       }
     } catch (e) {
       state = state.copyWith(
-          homeStateStatus: ProductStateStatus.fail, error: e.toString());
+          productStateStatus: ProductStateStatus.fail, error: e.toString());
     }
   }
 
   Future<void> fetchVariantDetail({required String id}) async {
     try {
-      state = state.copyWith(homeStateStatus: ProductStateStatus.loading);
+      state = state.copyWith(productStateStatus: ProductStateStatus.loading);
       ProductVariantResponseModel? data =
           await productService.fethProductVariant(id: id);
       selectedVariant = data;
       if (data?.error == null) {
         setupProductVariantInformationTile(data);
         state = state.copyWith(
-            homeStateStatus: ProductStateStatus.completed,
+            productStateStatus: ProductStateStatus.completed,
             productVariantResponseModel: data);
       } else {
         state = state.copyWith(
-            homeStateStatus: ProductStateStatus.fail,
+            productStateStatus: ProductStateStatus.fail,
             error: data?.error?.errorMessage);
       }
     } catch (e) {
       state = state.copyWith(
-          homeStateStatus: ProductStateStatus.fail, error: e.toString());
+          productStateStatus: ProductStateStatus.fail, error: e.toString());
     }
   }
 
   Future<void> addToCart() async {
     try {
-      state = state.copyWith(homeStateStatus: ProductStateStatus.addToCartLoading);
+      state =
+          state.copyWith(productStateStatus: ProductStateStatus.addToCartLoading);
       String? cartId = await SharedPreferencesManager.instance
           .getCart(key: SharedPreferencesEnum.cart);
       if (cartId == null) {
@@ -86,12 +88,12 @@ class ProductDetailController extends StateNotifier<ProductState> {
                           ""));
           if (addToCartResponse?.error == null) {
             state = state.copyWith(
-                homeStateStatus: ProductStateStatus.addToCartCompleted);
+                productStateStatus: ProductStateStatus.addToCartCompleted);
           } else {
-            state = state.copyWith(homeStateStatus: ProductStateStatus.fail);
+            state = state.copyWith(productStateStatus: ProductStateStatus.fail);
           }
         } else {
-          state = state.copyWith(homeStateStatus: ProductStateStatus.fail);
+          state = state.copyWith(productStateStatus: ProductStateStatus.fail);
         }
       } else {
         String? cartId = await SharedPreferencesManager.instance
@@ -106,14 +108,14 @@ class ProductDetailController extends StateNotifier<ProductState> {
                         ""));
         if (addToCartResponse?.error == null) {
           state = state.copyWith(
-              homeStateStatus: ProductStateStatus.addToCartCompleted);
+              productStateStatus: ProductStateStatus.addToCartCompleted);
         } else {
-          state = state.copyWith(homeStateStatus: ProductStateStatus.fail);
+          state = state.copyWith(productStateStatus: ProductStateStatus.fail);
         }
       }
     } catch (e) {
       state = state.copyWith(
-          homeStateStatus: ProductStateStatus.fail, error: e.toString());
+          productStateStatus: ProductStateStatus.fail, error: e.toString());
     }
   }
 
@@ -135,7 +137,8 @@ class ProductDetailController extends StateNotifier<ProductState> {
       ),
       ExpansionTileWidget(
         title: "Paylaş",
-        child: const Text("Paylaşımlar"),
+        child: const Text(
+            "Bu kısımda sosyal medya hesaplarında veya direkt link olarak paylaşılabilir bir yapı olabilir."),
       ),
     ];
   }
